@@ -69,7 +69,7 @@ public class GameController {
 		for (GameUnit gu : gameModel.getGameUnits()) {
 			Rectangle unit = new Rectangle(gu.getPosition().x,
 					gu.getPosition().y, gu.getWidth(), gu.getHeight());
-			if (unit.intersects(new Rectangle(e.getX(), e.getY(), 1, 1))) {
+			if (unit.intersects(new Rectangle(e.getX(), e.getY(), 2, 2))) {
 				unitsToRemove.add(gu);
 			}
 		}

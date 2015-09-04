@@ -23,7 +23,6 @@ public class InputContainer implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		this.addToStack(arg0);
 	}
 
 	@Override
@@ -41,12 +40,11 @@ public class InputContainer implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		this.addToStack(arg0);
 	}
 }
