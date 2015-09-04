@@ -14,11 +14,9 @@ public class GameController {
 	private GameView gameView;
 	private InputContainer inputContainer;
 	private boolean playing;
-	private long dt;
 
 	public GameController() {
 		playing = true;
-		dt = System.currentTimeMillis();
 		gameModel = new GameModel();
 		gameModel.addGameUnit(new DogeUnit());
 		gameModel.addGameUnit(new SanicUnit());

@@ -3,7 +3,6 @@ package View;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -13,6 +12,7 @@ import Model.GameUnit;
 
 public class PlayingField extends JPanel{
 	
+	private static final long serialVersionUID = -5575128227457186909L;
 	private GameModel gameModel;
 	
 	public PlayingField(GameModel gameModel){

@@ -8,6 +8,7 @@ import Model.GameModel;
 
 public class GameView extends JFrame{
 
+	private static final long serialVersionUID = -4755646091718898407L;
 	private PlayingField playingField;
 	
 	public GameView(GameModel gameModel){
