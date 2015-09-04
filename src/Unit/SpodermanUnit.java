@@ -8,4 +8,8 @@ public class SpodermanUnit extends GameUnit{
 		width = 48;
 		height = 48;
 	}
+	
+	public GameUnit copy(){
+		return new SpodermanUnit();
+	}
 }

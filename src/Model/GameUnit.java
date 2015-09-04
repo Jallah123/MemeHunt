@@ -13,9 +13,12 @@ public abstract class GameUnit extends MoveBehaviour {
 	
 	public GameUnit(){
 		Random r = new Random();
-		position = new Point(r.nextInt(1024), r.nextInt(720));
+		// only spawn in the middle of the screen so it doesn't move out too fast
+		position = new Point(r.nextInt(1000), r.nextInt(500));
 		aliveTime = 0;
 	}
+	
+	public abstract GameUnit copy();
 	
 	public void update(){
 		position = move(position, aliveTime);

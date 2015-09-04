@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import Factory.UnitFactory;
 import Model.*;
 import Unit.*;
 import View.*;
@@ -18,11 +19,14 @@ public class GameController {
 	public GameController() {
 		playing = true;
 		gameModel = new GameModel();
-		gameModel.addGameUnit(new DogeUnit());
+/*		gameModel.addGameUnit(new DogeUnit());
 		gameModel.addGameUnit(new SanicUnit());
 		gameModel.addGameUnit(new NyanUnit());
 		gameModel.addGameUnit(new DolanUnit());
 		gameModel.addGameUnit(new SpodermanUnit());
+		*/
+		gameModel.addGameUnit(UnitFactory.create("DogeUnit"));
+		
 		inputContainer = new InputContainer();
 		gameView = new GameView(gameModel);
 		gameView.getPlayingField().addMouseListener(inputContainer);
@@ -51,6 +55,7 @@ public class GameController {
 			}
 		}
 	}
+	
 	private boolean isOutOfScreen(GameUnit gu){
 		if (gu.getPosition().x < 0
 				|| gu.getPosition().x > gameView.getPlayingField()
@@ -64,6 +69,7 @@ public class GameController {
 		}
 		return false;
 	}
+	
 	public void handleMouseEvent(MouseEvent e) {
 		ArrayList<GameUnit> unitsToRemove = new ArrayList<GameUnit>();
 		for (GameUnit gu : gameModel.getGameUnits()) {
