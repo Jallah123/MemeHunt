@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,5 +33,9 @@ public class PlayingField extends JPanel{
 		for(GameUnit gu: gameModel.getGameUnits()){
 			g.drawImage(new ImageIcon(gu.getImageUrl()).getImage(), gu.getPosition().x, gu.getPosition().y, gu.getWidth(), gu.getHeight(), null);
 		}
+		g.setColor(Color.YELLOW);
+		g.drawString("Score : " + gameModel.getScore(), 0, 10);
+		g.drawString("FPS :", 0, 25);
+		g.setColor(Color.BLACK);
 	}
 }

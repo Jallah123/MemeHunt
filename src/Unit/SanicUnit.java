@@ -7,6 +7,7 @@ public class SanicUnit extends GameUnit {
 		imageUrl = "assets/sanic.png";
 		width = 48;
 		height = 48;
+		score = 9001;
 	}
 	
 	public GameUnit copy(){

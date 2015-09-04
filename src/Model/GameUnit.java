@@ -10,12 +10,15 @@ public abstract class GameUnit extends MoveBehaviour {
 	protected Point position;
 	protected int width;
 	protected int height;
+	protected int score;
+	
 	
 	public GameUnit(){
 		Random r = new Random();
 		// only spawn in the middle of the screen so it doesn't move out too fast
 		position = new Point(r.nextInt(1000), r.nextInt(500));
 		aliveTime = 0;
+		score = 1;
 	}
 	
 	public abstract GameUnit copy();
@@ -25,6 +28,9 @@ public abstract class GameUnit extends MoveBehaviour {
 		aliveTime++;
 	}
 	
+	public int getScore() {
+		return score;
+	}
 	public Point getPosition() {
 		return position;
 	}
