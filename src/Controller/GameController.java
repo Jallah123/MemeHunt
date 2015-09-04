@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import Factory.UnitFactory;
 import Model.*;
-import Unit.*;
 import View.*;
 
 public class GameController {
