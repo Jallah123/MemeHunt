@@ -1,20 +1,20 @@
 package Model;
 
 import java.awt.Point;
+import java.util.Random;
 
 public abstract class MoveBehaviour {
 	
-	private Point heading;
+	protected Point position;
+	protected Point heading;
 	
 	public MoveBehaviour(){
 		heading = new Point(1, 0);
+		Random r = new Random();
+		// only spawn in the middle of the screen so it doesn't move out too fast
+		position = new Point(r.nextInt(1000), r.nextInt(500));
 	}
 	
-	public Point move(Point p, int timeAlive){
-		heading.y = (int) (Math.cos(timeAlive/3)*10);
-		Point newLoc = new Point();
-		newLoc.x = p.x + heading.x;
-		newLoc.y = p.y + heading.y;
-		return newLoc;
-	}
+	public abstract void move(int ticksAlive);
+	public abstract MoveBehaviour copy();
 }

@@ -1,22 +1,22 @@
 package Model;
 
 import java.awt.Point;
-import java.util.Random;
+import Factory.MoveBehaviourFactory;
 
-public abstract class GameUnit extends MoveBehaviour {
+public abstract class GameUnit {
 	
+	protected MoveBehaviour moveBehaviour;
+	protected MoveContainer moveContainer;
 	protected int aliveTime;
 	protected String imageUrl;
-	protected Point position;
 	protected int width;
 	protected int height;
 	protected int score;
 	
-	
 	public GameUnit(){
-		Random r = new Random();
-		// only spawn in the middle of the screen so it doesn't move out too fast
-		position = new Point(r.nextInt(1000), r.nextInt(500));
+		this.moveContainer = MoveContainer.getInstance();
+		moveBehaviour = MoveBehaviourFactory.create();
+		moveContainer.add(moveBehaviour);
 		aliveTime = 0;
 		score = 1;
 	}
@@ -24,7 +24,7 @@ public abstract class GameUnit extends MoveBehaviour {
 	public abstract GameUnit copy();
 	
 	public void update(){
-		position = move(position, aliveTime);
+		moveBehaviour.move(aliveTime);
 		aliveTime++;
 	}
 	
@@ -32,10 +32,7 @@ public abstract class GameUnit extends MoveBehaviour {
 		return score;
 	}
 	public Point getPosition() {
-		return position;
-	}
-	public void setPosition(Point position) {
-		this.position = position;
+		return moveBehaviour.position;
 	}
 	public int getAliveTime() {
 		return aliveTime;

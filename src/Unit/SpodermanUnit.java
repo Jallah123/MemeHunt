@@ -4,6 +4,7 @@ import Model.GameUnit;
 
 public class SpodermanUnit extends GameUnit{
 	public SpodermanUnit(){
+		super();
 		imageUrl = "assets/spoderman.png";
 		width = 48;
 		height = 48;

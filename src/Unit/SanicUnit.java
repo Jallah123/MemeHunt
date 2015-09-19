@@ -4,6 +4,7 @@ import Model.GameUnit;
 
 public class SanicUnit extends GameUnit {
 	public SanicUnit(){
+		super();
 		imageUrl = "assets/sanic.png";
 		width = 48;
 		height = 48;

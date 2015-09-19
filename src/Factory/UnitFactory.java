@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import Model.GameUnit;
+import Model.MoveContainer;
 
 public class UnitFactory {
 	private static final Map<String, GameUnit> units;

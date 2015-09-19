@@ -14,17 +14,17 @@ public class GameController {
 	private GameView gameView;
 	private InputContainer inputContainer;
 	private boolean playing;
+	private long previousTime;
 
 	public GameController() {
 		playing = true;
 		gameModel = new GameModel();
-		
+
 		gameModel.addGameUnit(UnitFactory.create("DogeUnit"));
 		gameModel.addGameUnit(UnitFactory.create("SanicUnit"));
 		gameModel.addGameUnit(UnitFactory.create("DolanUnit"));
 		gameModel.addGameUnit(UnitFactory.create("SpodermanUnit"));
 		gameModel.addGameUnit(UnitFactory.create("NyanUnit"));
-		
 		inputContainer = new InputContainer();
 		gameView = new GameView(gameModel);
 		gameView.getPlayingField().addMouseListener(inputContainer);
@@ -32,57 +32,57 @@ public class GameController {
 	}
 
 	public void play() {
+		previousTime = System.currentTimeMillis();
 		while (playing) {
-			handleMouseEvents();
-			removeOutOfScreenUnits();
-			
-			gameView.getPlayingField().repaint();
-			
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				System.out.println("System woke up");
+			long dt = System.currentTimeMillis() - previousTime;
+			if (dt > 10) {
+				gameModel.setFps((int) (1000/dt));
+				handleMouseEvents();
+				moveUnits();
+				removeOutOfScreenUnits();
+				gameView.getPlayingField().repaint();
+				previousTime = System.currentTimeMillis();
 			}
 		}
 	}
-	
-	private void removeOutOfScreenUnits(){
-		ArrayList<GameUnit> unitsToRemove = new ArrayList<GameUnit>();
+
+	private void moveUnits() {
 		for (GameUnit gu : gameModel.getGameUnits()) {
 			gu.update();
-			if(isOutOfScreen(gu)){
+		}
+	}
+
+	private void removeOutOfScreenUnits() {
+		ArrayList<GameUnit> unitsToRemove = new ArrayList<GameUnit>();
+		for (GameUnit gu : gameModel.getGameUnits()) {
+			if (isOutOfScreen(gu)) {
 				unitsToRemove.add(gu);
 			}
 		}
 		gameModel.getGameUnits().removeAll(unitsToRemove);
 	}
-	
-	private boolean isOutOfScreen(GameUnit gu){
-		if (gu.getPosition().x < 0
-				|| gu.getPosition().x > gameView.getPlayingField()
-						.getWidth()) {
+
+	private boolean isOutOfScreen(GameUnit gu) {
+		if (gu.getPosition().x < 0 || gu.getPosition().x > gameView.getPlayingField().getWidth()) {
 			return true;
 		}
-		if (gu.getPosition().y < 0
-				|| gu.getPosition().y > gameView.getPlayingField()
-						.getHeight()) {
+		if (gu.getPosition().y < 0 || gu.getPosition().y > gameView.getPlayingField().getHeight()) {
 			return true;
 		}
 		return false;
 	}
-	
-	private void handleMouseEvents(){
+
+	private void handleMouseEvents() {
 		while (!inputContainer.getInputs().empty()) {
 			MouseEvent e = inputContainer.getInputs().pop();
 			handleMouseEvent(e);
 		}
 	}
-	
+
 	private void handleMouseEvent(MouseEvent e) {
 		ArrayList<GameUnit> unitsToRemove = new ArrayList<GameUnit>();
 		for (GameUnit gu : gameModel.getGameUnits()) {
-			Rectangle unit = new Rectangle(gu.getPosition().x,
-					gu.getPosition().y, gu.getWidth(), gu.getHeight());
+			Rectangle unit = new Rectangle(gu.getPosition().x, gu.getPosition().y, gu.getWidth(), gu.getHeight());
 			if (unit.intersects(new Rectangle(e.getX(), e.getY(), 2, 2))) {
 				unitsToRemove.add(gu);
 				gameModel.addScore(gu.getScore());

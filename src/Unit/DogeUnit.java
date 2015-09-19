@@ -4,6 +4,7 @@ import Model.GameUnit;
 
 public class DogeUnit extends GameUnit {
 	public DogeUnit(){
+		super();
 		imageUrl = "assets/doge.png";
 		width = 48;
 		height = 48;

@@ -35,7 +35,7 @@ public class PlayingField extends JPanel{
 		}
 		g.setColor(Color.YELLOW);
 		g.drawString("Score : " + gameModel.getScore(), 0, 10);
-		g.drawString("FPS :", 0, 25);
+		g.drawString("FPS :" + gameModel.getFps(), 0, 25);
 		g.setColor(Color.BLACK);
 	}
 }
