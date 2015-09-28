@@ -4,9 +4,14 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import Factory.LevelFactory;
 import Factory.UnitFactory;
-import Model.*;
-import View.*;
+import Model.DeadState;
+import Model.GameModel;
+import Model.GameUnit;
+import Model.InputContainer;
+import Model.Level;
+import View.GameView;
 
 public class GameController {
 
@@ -15,16 +20,13 @@ public class GameController {
 	private InputContainer inputContainer;
 	private boolean playing;
 	private long previousTime;
+	private LevelFactory levelFactory;
 
 	public GameController() {
 		playing = true;
+		levelFactory = new LevelFactory();
 		gameModel = new GameModel();
-
-		gameModel.addGameUnit(UnitFactory.create("DogeUnit"));
-		gameModel.addGameUnit(UnitFactory.create("SanicUnit"));
-		gameModel.addGameUnit(UnitFactory.create("DolanUnit"));
-		gameModel.addGameUnit(UnitFactory.create("SpodermanUnit"));
-		gameModel.addGameUnit(UnitFactory.create("NyanUnit"));
+		gameModel.setLevel(levelFactory.getCurrentLevel());
 		inputContainer = new InputContainer();
 		gameView = new GameView(gameModel);
 		gameView.getPlayingField().addMouseListener(inputContainer);
@@ -35,14 +37,35 @@ public class GameController {
 		previousTime = System.currentTimeMillis();
 		while (playing) {
 			long dt = System.currentTimeMillis() - previousTime;
-			if (dt > 10) {
-				gameModel.setFps((int) (1000/dt));
+			if (dt > gameModel.getLevel().getSpeed()) {
+				gameModel.setFps((int) (1000 / dt));
 				handleMouseEvents();
 				moveUnits();
 				removeOutOfScreenUnits();
+				spawnUnit(dt);
 				gameView.getPlayingField().repaint();
 				previousTime = System.currentTimeMillis();
+				nextLevel();
 			}
+		}
+	}
+
+	private void nextLevel() {
+		if (gameModel.getLevel().getAmountOfEnemies() <= 0 && gameModel.allDead()) {
+			Level nextLevel = levelFactory.nextLevel();
+			if (nextLevel != null) {
+				gameModel.setLevel(nextLevel);
+			}
+		}
+	}
+
+	private void spawnUnit(long dt) {
+		Level level = gameModel.getLevel();
+		level.setTimeTillSpawn(level.getTimeTillSpawn() - dt);
+		if (level.getTimeTillSpawn() <= 0 && level.getAmountOfEnemies() > 0) {
+			gameModel.addGameUnit(UnitFactory.createUnit());
+			level.setTimeTillSpawn(level.getSpawnTime());
+			level.setAmountOfEnemies(level.getAmountOfEnemies() - 1);
 		}
 	}
 
@@ -59,7 +82,7 @@ public class GameController {
 				unitsToRemove.add(gu);
 			}
 		}
-		gameModel.getGameUnits().removeAll(unitsToRemove);
+		setDeadState(unitsToRemove);
 	}
 
 	private boolean isOutOfScreen(GameUnit gu) {
@@ -88,6 +111,12 @@ public class GameController {
 				gameModel.addScore(gu.getScore());
 			}
 		}
-		gameModel.getGameUnits().removeAll(unitsToRemove);
+		setDeadState(unitsToRemove);
+	}
+
+	private void setDeadState(ArrayList<GameUnit> units) {
+		for (GameUnit u : units) {
+			u.setState(new DeadState());
+		}
 	}
 }

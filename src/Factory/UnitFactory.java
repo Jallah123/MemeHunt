@@ -1,31 +1,25 @@
 package Factory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.ServiceLoader;
-
 import Model.GameUnit;
-import Model.MoveContainer;
 
 public class UnitFactory {
-	private static final Map<String, GameUnit> units;
+	private static final ArrayList<GameUnit> units;
 	private static final ServiceLoader<GameUnit> loader;
 	
 	static {
-		units = new HashMap<String, GameUnit>();
+		units = new ArrayList<GameUnit>();
 		loader = ServiceLoader.load(GameUnit.class);
 		
 		for (GameUnit command : loader) {
-			units.put(command.getClass().getSimpleName(), command);
+			units.add(command);
 		}
 	}
 	
-	public static final GameUnit create(final String name) {
-		if (units.containsKey(name)) {
-			return units.get(name).copy();
-		}
-		
-		final String message = String.format("GameUnit '%s' was not found, is the services file up to date?", name);
-		throw new IllegalArgumentException(message);
+	public static final GameUnit createUnit() {
+		Random r = new Random();
+		return units.get(r.nextInt(units.size())).copy();
 	}
 }
