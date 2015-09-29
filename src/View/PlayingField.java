@@ -8,8 +8,6 @@ import java.awt.Graphics2D;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import Model.AliveState;
-import Model.DeadState;
 import Model.GameModel;
 import Model.GameUnit;
 
@@ -33,7 +31,7 @@ public class PlayingField extends JPanel {
 		g.drawImage(new ImageIcon(gameModel.getLevel().getBackgroundImageUrl()).getImage(), 0, 0, this.getWidth(),
 				this.getHeight(), null);
 		for (GameUnit gu : gameModel.getGameUnits()) {
-			if (gu.getState() instanceof AliveState) {
+			if (!gu.isDead()) {
 				g.drawImage(new ImageIcon(gu.getImageUrl()).getImage(), gu.getPosition().x, gu.getPosition().y,
 						gu.getWidth(), gu.getHeight(), null);
 			}

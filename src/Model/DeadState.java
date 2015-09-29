@@ -6,4 +6,9 @@ public class DeadState implements GameUnitState {
 	public void doAction(GameUnit u) {
 
 	}
+
+	@Override
+	public boolean isDead() {
+		return true;
+	}
 }

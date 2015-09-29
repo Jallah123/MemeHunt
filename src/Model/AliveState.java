@@ -7,4 +7,9 @@ public class AliveState implements GameUnitState {
 		u.moveBehaviour.move(u.aliveTime);
 		u.aliveTime++;
 	}
+
+	@Override
+	public boolean isDead() {
+		return false;
+	}
 }

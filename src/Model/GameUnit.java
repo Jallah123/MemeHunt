@@ -60,5 +60,7 @@ public abstract class GameUnit {
 	public void setState(GameUnitState state) {
 		this.state = state;
 	}
-
+	public boolean isDead(){
+		return this.state.isDead();
+	}
 }

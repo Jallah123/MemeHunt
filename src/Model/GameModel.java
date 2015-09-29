@@ -19,7 +19,7 @@ public class GameModel {
 	public boolean allDead() {
 		int deadCount = 0;
 		for (GameUnit gu : gameUnits) {
-			if (gu.getState() instanceof DeadState) {
+			if (gu.isDead()) {
 				deadCount++;
 			}
 		}
