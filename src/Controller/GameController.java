@@ -19,7 +19,9 @@ public class GameController {
 	private GameView gameView;
 	private InputContainer inputContainer;
 	private boolean playing;
-	private long previousTime;
+	private long previousTick;
+	private long previousFpsUpdate;
+	private int fps;
 	private LevelFactory levelFactory;
 
 	public GameController() {
@@ -34,20 +36,31 @@ public class GameController {
 	}
 
 	public void play() {
-		previousTime = System.currentTimeMillis();
+		previousTick = System.currentTimeMillis();
 		while (playing) {
-			long dt = System.currentTimeMillis() - previousTime;
+			long dt = System.currentTimeMillis() - previousTick + 1;
 			if (dt > gameModel.getLevel().getSpeed()) {
-				gameModel.setFps((int) (1000 / dt));
 				handleMouseEvents();
-				moveUnits();
+				update();
 				removeOutOfScreenUnits();
 				spawnUnit(dt);
-				gameView.getPlayingField().repaint();
-				previousTime = System.currentTimeMillis();
+				previousTick = System.currentTimeMillis();
 				nextLevel();
 			}
+			updateFPS(dt);
+			gameView.getPlayingField().repaint();
+
 		}
+	}
+	
+	private void updateFPS(long delta) {
+	    if (previousFpsUpdate > 1000) {
+	        gameModel.setFps(fps);
+	        fps = 0;
+	        previousFpsUpdate = 0;
+	    }
+	    previousFpsUpdate += delta;
+	    fps++;
 	}
 
 	private void nextLevel() {
@@ -69,7 +82,7 @@ public class GameController {
 		}
 	}
 
-	private void moveUnits() {
+	private void update() {
 		for (GameUnit gu : gameModel.getGameUnits()) {
 			gu.update();
 		}

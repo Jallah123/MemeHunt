@@ -39,6 +39,7 @@ public class InputContainer implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		arg0.getComponent().setEnabled(false);
 		// TODO Auto-generated method stub
 	}
 
@@ -46,5 +47,6 @@ public class InputContainer implements MouseListener{
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		this.addToStack(arg0);
+		arg0.getComponent().setEnabled(true);
 	}
 }
